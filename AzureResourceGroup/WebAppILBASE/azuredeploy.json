@@ -1,0 +1,219 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "vnetId": {
+      "type": "string",
+      "metadata": {
+        "description": "Existing vnet Id"
+      }
+    },
+    "aseSubnetName": {
+      "type": "string",
+      "metadata": {
+        "description": "Subnet name that will contain the App Service Environment"
+      }
+    },
+    "agentSubnetName": {
+      "type": "string",
+      "metadata": {
+        "description": "Subnet name that will contain the ASE agent VM"
+      }
+    },
+    "agentVmSize": {
+      "type": "string",
+      "allowedValues": [
+        "Standard_DS1_v2",
+        "Standard_DS2_v2",
+        "Standard_DS3_v2",
+        "Standard_DS4_v2",
+        "Standard_DS5_v2",
+        "Standard_DS11_v2",
+        "Standard_DS12_v2",
+        "Standard_DS13_v2",
+        "Standard_DS14_v2",
+        "Standard_DS15_v2"
+      ],
+      "defaultValue": "Standard_DS2_v2"
+    },
+    "adminUsername": {
+      "type": "string",
+      "defaultValue": "EnterpriseAdmin"
+    },
+    "adminPassword": {
+      "type": "securestring"
+    },
+    "domainName": {
+      "type": "string",
+      "defaultValue": "contoso-internal.us"
+    },
+    "aseName": {
+      "type": "string"
+    },
+    "appServicePlanName": {
+      "type": "string"
+    },
+    "siteName": {
+      "type": "string"
+    },
+    "TSServerUrl": {
+      "type": "string"
+    },
+    "AgentPool": {
+      "type": "string"
+    },
+    "PAToken": {
+      "type": "securestring"
+    },
+    "AseIP": {
+      "type": "string"
+    },
+    "pfxBlobString": {
+      "type": "securestring"
+    },
+    "certificatePassword": {
+      "type": "securestring"
+    },
+    "certificateThumbprint": {
+      "type": "securestring"
+    },
+    "internalLoadBalancingMode": {
+      "type": "int",
+      "defaultValue": 3,
+      "allowedValues": [ 0, 1, 2, 3 ],
+      "metadata": {
+        "description": "0 = public VIP only, 1 = only ports 80/443 are mapped to ILB VIP, 2 = only FTP ports are mapped to ILB VIP, 3 = both ports 80/443 and FTP ports are mapped to an ILB VIP."
+      }
+    },
+    "pricingTier": {
+      "type": "string",
+      "allowedValues": [
+        "1",
+        "2",
+        "3"
+      ],
+      "defaultValue": "1",
+      "metadata": {
+        "description": "Defines pricing tier for workers: 1 = Isolated 1, 2 = Isolated 2, 3 = Isolated 3."
+      }
+    },
+    "capacity": {
+      "type": "int",
+      "defaultValue": 1,
+      "metadata": {
+        "description": "Defines the number of instances that will be allocated to the app service plan."
+      }
+    },
+    "_artifactsLocation": {
+      "type": "string"
+    }
+  },
+  "variables": {
+    "windowsVmTemplateURL": "[concat(parameters('_artifactsLocation'), '/primitives/windowsvm.json')]",
+    "agentTemplateURL": "[concat(parameters('_artifactsLocation'), '/nested-templates/ase-agent.json')]",
+    "aseTemplateURL": "[concat(parameters('_artifactsLocation'), '/nested-templates/app-service-environment.json')]",
+    "buildAgentVmName": "build-agent",
+    "AppDns": "[concat(parameters('siteName'),'.',parameters('domainName'))]",
+    "agentVmSubnetId": "[concat(parameters('vnetId'), '/subnets/', parameters('agentSubnetName'))]",
+    "aseSubnetId": "[concat(parameters('vnetId'), '/subnets/', parameters('aseSubnetName'))]"
+  },
+  "resources": [
+    {
+      "apiVersion": "2017-05-10",
+      "type": "Microsoft.Resources/deployments",
+      "name": "agentVM",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('agentTemplateURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "subnetId": {
+            "value": "[variables('agentVmSubnetId')]"
+          },
+          "vmSize": {
+            "value": "[parameters('agentVmSize')]"
+          },
+          "adminUsername": {
+            "value": "[parameters('adminUsername')]"
+          },
+          "adminPassword": {
+            "value": "[parameters('adminPassword')]"
+          },
+          "vmName": {
+            "value": "[variables('buildAgentVmName')]"
+          },
+          "TSServerUrl": {
+            "value": "[parameters('TSServerUrl')]"
+          },
+          "AgentPool": {
+            "value": "[parameters('AgentPool')]"
+          },
+          "PAToken": {
+            "value": "[parameters('PAToken')]"
+          },
+          "AseIp": {
+            "value": "[parameters('AseIp')]"
+          },
+          "AppDns": {
+            "value": "[variables('AppDns')]"
+          },
+          "_artifactsLocation": {
+            "value": "[parameters('_artifactsLocation')]"
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "2017-05-10",
+      "type": "Microsoft.Resources/deployments",
+      "name": "AppServiceEnvironment",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('aseTemplateURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "subnetId": {
+            "value": "[variables('aseSubnetId')]"
+          },
+          "domainName": {
+            "value": "[parameters('domainName')]"
+          },
+          "aseName": {
+            "value": "[parameters('aseName')]"
+          },
+          "appServicePlanName": {
+            "value": "[parameters('appServicePlanName')]"
+          },
+          "siteName": {
+            "value": "[parameters('siteName')]"
+          },
+          "pfxBlobString": {
+            "value": "[parameters('pfxBlobString')]"
+          },
+          "certificatePassword": {
+            "value": "[parameters('certificatePassword')]"
+          },
+          "certificateThumbprint": {
+            "value": "[parameters('certificateThumbprint')]"
+          },
+          "internalLoadBalancingMode": {
+            "value": "[parameters('internalLoadBalancingMode')]"
+          },
+          "pricingTier": {
+            "value": "[parameters('pricingTier')]"
+          },
+          "capacity": {
+            "value": "[parameters('capacity')]"
+          },
+          "_artifactsLocation": {
+            "value": "[parameters('_artifactsLocation')]"
+          }
+        }
+      }
+    }
+  ]
+}

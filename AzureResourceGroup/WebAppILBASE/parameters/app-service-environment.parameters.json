@@ -1,0 +1,226 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json",
+    "contentVersion": "1.0.0.0",
+  "parameters": {
+    "subnetId": {
+      "type": "string",
+      "metadata": {
+        "description": "Subnet Id"
+      }
+    },
+    "domainName": {
+      "type": "string",
+      "metadata": {
+        "description": "Set this to the root domain associated with the ASE. For example: contoso.com"
+      }
+    },
+    "aseName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the App Service Environment"
+      }
+    },
+    "appServicePlanName": {
+      "type": "string",
+      "metadata": {
+        "description": "App service plan name"
+      }
+    },
+    "siteName": {
+      "type": "string",
+      "metadata": {
+        "description": "App site name"
+      }
+    },
+    "pfxBlobString": {
+      "type": "string",
+      "metadata": {
+        "description": ""
+      }
+    },
+    "certificateThumbprint": {
+      "type": "string",
+      "metadata": {
+        "description": "PFX certificste thumbprint"
+      }
+    },
+    "certificatePassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "PFX certificate password"
+      }
+    },
+    "internalLoadBalancingMode": {
+      "type": "int",
+      "defaultValue": 3,
+      "allowedValues": [ 0, 1, 2, 3 ],
+      "metadata": {
+        "description": "0 = public VIP only, 1 = only ports 80/443 are mapped to ILB VIP, 2 = only FTP ports are mapped to ILB VIP, 3 = both ports 80/443 and FTP ports are mapped to an ILB VIP."
+      }
+    },
+    "pricingTier": {
+      "type": "string",
+      "allowedValues": [
+        "1",
+        "2",
+        "3"
+      ],
+      "defaultValue": "1",
+      "metadata": {
+        "description": "Defines pricing tier for workers: 1 = Isolated 1, 2 = Isolated 2, 3 = Isolated 3."
+      }
+    },
+    "capacity": {
+      "type": "int",
+      "defaultValue": 1,
+      "metadata": {
+        "description": "Defines the number of instances that will be allocated to the app service plan."
+      }
+    },
+    "_artifactsLocation": {
+      "type": "string",
+      "metadata": {
+        "description": "Artifacts location Url"
+      }
+    }
+  },
+  "variables": {
+    "vnetResourceGroupName": "[split(parameters('subnetId'), '/')[4]]",
+    "vnetName": "[split(parameters('subnetId'), '/')[8]]",
+    "subnetName": "[split(parameters('subnetId'), '/')[10]]",
+    "vnetId": "[resourceId(variables('vnetResourceGroupName'), 'Microsoft.Network/virtualNetworks', variables('vnetName'))]",
+
+    "ilbCertTemplateURL": "[concat(parameters('_artifactsLocation'),'/nested-templates/ase-ilb-certificate.json')]",
+
+    "certName": "[concat('DefaultCertificateFor_', parameters('aseName'), '_InternalLoadBalancingASE')]",
+
+    "locationLUT": {
+      "usgovvirginia": "USGov Virginia",
+      "usgoviowa": "USGov Iowa",
+      "usdodeast": "USDoD East",
+      "usdodcentral": "USDoD Central",
+      "usgovtexas": "USGov Texas",
+      "usgovarizona": "USGov Arizona",
+      "eastasia": "East Asia",
+      "southeastasia": "Southeast Asia",
+      "centralus": "Central US",
+      "eastus": "East US",
+      "eastus2": "East US 2",
+      "westus": "West US",
+      "northcentralus": "North Central US",
+      "southcentralus": "South Central US",
+      "northeurope": "North Europe",
+      "westeurope": "West Europe",
+      "japanwest": "Japan West",
+      "japaneast": "Japan East",
+      "brazilsouth": "Brazil South",
+      "australiaeast": "Australia East",
+      "australiasoutheast": "Australia Southeast",
+      "southindia": "South India",
+      "centralindia": "Central India",
+      "westindia": "West India",
+      "canadacentral": "Canada Central",
+      "canadaeast": "Canada East",
+      "uksouth": "UK South",
+      "ukwest": "UK West",
+      "westcentralus": "West Central US",
+      "westus2": "West US 2",
+      "koreacentral": "Korea Central",
+      "koreasouth": "Korea South"
+    }
+  },
+  "resources": [
+    {
+      "apiVersion": "2015-08-01",
+      "type": "Microsoft.Web/hostingEnvironments",
+      "name": "[parameters('aseName')]",
+      "kind": "ASEV2",
+      "location": "[variables('locationLUT')[resourceGroup().location]]",
+      "properties": {
+        "name": "[parameters('aseName')]",
+        "location": "[variables('locationLUT')[resourceGroup().location]]",
+        "ipSslAddressCount": 0,
+        "internalLoadBalancingMode": "[parameters('internalLoadBalancingMode')]",
+        "dnsSuffix": "[parameters('domainName')]",
+        "virtualNetwork": {
+          "Id": "[variables('vnetId')]",
+          "Subnet": "[variables('subnetName')]"
+        }
+      }
+    },
+    {
+      "apiVersion": "2017-05-10",
+      "type": "Microsoft.Resources/deployments",
+      "name": "SetILBCert",
+      "dependsOn": [
+        "[concat('Microsoft.Web/hostingEnvironments/', parameters('aseName'))]"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('ilbCertTemplateURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "appServiceEnvironmentName": {
+            "value": "[parameters('aseName')]"
+          },
+          "existingAseLocation": {
+            "value": "[variables('locationLUT')[resourceGroup().location]]"
+          },
+          "pfxBlobString": {
+            "value": "[parameters('pfxBlobString')]"
+          },
+          "password": {
+            "value": "[parameters('certificatePassword')]"
+          },
+          "certificateThumbprint": {
+            "value": "[parameters('certificateThumbprint')]"
+          },
+          "certificateName": {
+            "value": "[variables('certName')]"
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "2016-09-01",
+      "type": "Microsoft.Web/serverfarms",
+      "name": "[parameters('appServicePlanName')]",
+      "location": "[variables('locationLUT')[resourceGroup().location]]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/hostingEnvironments', parameters('aseName'))]",
+        "[resourceId('Microsoft.Resources/deployments', 'SetILBCert')]"
+      ],
+      "properties": {
+        "name": "[parameters('appServicePlanName')]",
+        "hostingEnvironmentProfile": {
+          "id": "[resourceId('Microsoft.Web/hostingEnvironments', parameters('aseName'))]"
+        }
+      },
+      "sku": {
+        "name": "[concat('I',parameters('pricingTier'))]",
+        "tier": "Isolated",
+        "size": "[concat('I',parameters('pricingTier'))]",
+        "family": "I",
+        "capacity": "[parameters('capacity')]"
+      }
+    },
+    {
+      "apiVersion": "2016-08-01",
+      "name": "[parameters('siteName')]",
+      "type": "Microsoft.Web/sites",
+      "location": "[variables('locationLUT')[resourceGroup().location]]",
+      "dependsOn": [
+        "[concat('Microsoft.Web/serverFarms/', parameters('appServicePlanName'))]"
+      ],
+      "properties": {
+        "name": "[parameters('siteName')]",
+        "serverFarmId": "[resourceId('Microsoft.Web/serverFarms', parameters('appServicePlanName'))]",
+        "hostingEnvironmentProfile": {
+          "id": "[resourceId('Microsoft.Web/hostingEnvironments', parameters('aseName'))]"
+        }
+      }
+    }
+  ]
+}
