@@ -15,6 +15,9 @@ param(
     [Parameter(Mandatory, ParameterSetName="aseenv")]
     [String]$VnetName,
 
+    [Parameter(Mandatory, ParameterSetName="agentvm")]
+    [String]$VmName,
+
     [Parameter(Mandatory=$false, ParameterSetName="agentvm")]
     [String]$AdminUsername = "EnterpriseAdmin",
 
@@ -97,6 +100,7 @@ $templateParameters.Add("domainName", @{ "value" = $DomainName })
 #endregion
 
 #region Agent VM
+$templateParameters.Add("agentVmName", @{ "value" = $VmName })
 $templateParameters.Add("AdminUsername", @{ "value" = $AdminUsername })
 $templateParameters.Add("AdminPassword", @{ "value" = (New-Object PSCredential "user", $AdminPassword).GetNetworkCredential().Password })
 $templateParameters.Add("TSServerUrl", @{ "value" = "https://$($VSTSProjectName).visualstudio.com" })

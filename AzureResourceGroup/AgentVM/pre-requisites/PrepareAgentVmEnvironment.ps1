@@ -1,4 +1,7 @@
 param(
+    [Parameter(Mandatory, ParameterSetName="agentvm")]
+    [String]$VmName,
+
     [Parameter(Mandatory=$false, ParameterSetName="agentvm")]
     [String]$AdminUsername = "EnterpriseAdmin",
 
@@ -38,12 +41,13 @@ $templateParameters = @{}
 $templateParameters.Add("_artifactsLocation", @{ "value" = $ArtifactsLocation })
 
 #region Agent VM
-$templateParameters.Add("AdminUsername", @{ "value" = $AdminUsername})
-$templateParameters.Add("AdminPassword", @{ "value" = (New-Object PSCredential "user", $AdminPassword).GetNetworkCredential().Password})
-$templateParameters.Add("TSServerUrl", @{ "value" = "https://$($VSTSProjectName).visualstudio.com"})
-$templateParameters.Add("AgentPool", @{ "value" = $AgentPool})
-$templateParameters.Add("PAToken", @{ "value" = $PersonalAccessToken})
-$templateParameters.Add("AseIP", @{ "value" = $AseIP})
+$templateParameters.Add("vmName", @{ "value" = $VmName })
+$templateParameters.Add("AdminUsername", @{ "value" = $AdminUsername })
+$templateParameters.Add("AdminPassword", @{ "value" = (New-Object PSCredential "user", $AdminPassword).GetNetworkCredential().Password })
+$templateParameters.Add("TSServerUrl", @{ "value" = "https://$($VSTSProjectName).visualstudio.com" })
+$templateParameters.Add("AgentPool", @{ "value" = $AgentPool })
+$templateParameters.Add("PAToken", @{ "value" = $PersonalAccessToken })
+$templateParameters.Add("AseIP", @{ "value" = $AseIP })
 #endregion
 
 if ($SaveToFile)

@@ -63,6 +63,12 @@
         "description": "Resource group to allocate the VSTS/TFS Agent VM"
       }
     },
+    "agentVmName": {
+      "type": "string",
+      "metadata": {
+        "description": "Build agent VM name"
+      }
+    },
     "agentVmSize": {
       "type": "string",
       "allowedValues": [
@@ -206,7 +212,7 @@
             "value": "[parameters('adminPassword')]"
           },
           "vmName": {
-            "value": "[variables('buildAgentVmName')]"
+            "value": "[parameters('agentVmName')]"
           },
           "TSServerUrl": {
             "value": "[parameters('TSServerUrl')]"
