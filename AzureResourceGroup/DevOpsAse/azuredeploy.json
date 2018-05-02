@@ -129,7 +129,7 @@
   },
   "variables": {
     "agentTemplateURL": "[concat(parameters('_artifactsLocation'), '/AgentVM/azuredeploy.json')]",
-    "aseTemplateURL": "[concat(parameters('_artifactsLocation'), '/AppServiceEnviroment/azuredeploy.json')]",
+    "aseTemplateURL": "[concat(parameters('_artifactsLocation'), '/AppServiceEnvironment/azuredeploy.json')]",
     "AppDns": "[concat(parameters('siteName'),'.',parameters('domainName'))]",
     "agentVmSubnetId": "[concat(parameters('vnetId'), '/subnets/', parameters('agentSubnetName'))]",
     "aseSubnetId": "[concat(parameters('vnetId'), '/subnets/', parameters('aseSubnetName'))]",

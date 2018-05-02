@@ -95,7 +95,7 @@
 
     "certName": "[concat('DefaultCertificateFor_', parameters('aseName'), '_InternalLoadBalancingASE')]",
 
-    "ilbCertTemplateURL": "[concat(parameters('_artifactsLocation'), '/AppServiceEnviroment/nested-templates/ase-ilb-certificate.json')]",
+    "ilbCertTemplateURL": "[concat(parameters('_artifactsLocation'), '/AppServiceEnvironment/nested-templates/ase-ilb-certificate.json')]",
     "appServiceTemplateURL": "[concat(parameters('_artifactsLocation'), '/AppServiceEnvironment/azuredeploy.json')]",
 
     "locationLUT": {
