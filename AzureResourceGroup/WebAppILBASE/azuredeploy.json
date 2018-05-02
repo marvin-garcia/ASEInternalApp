@@ -51,6 +51,13 @@
         "description": "Defines the number of instances that will be allocated to the app service plan."
       }
     },
+    "agentVmResourceGroup": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Resource group to allocate the VSTS/TFS Agent VM"
+      }
+    },
     "agentVmSize": {
       "type": "string",
       "allowedValues": [
@@ -114,7 +121,8 @@
     "buildAgentVmName": "build-agent",
     "AppDns": "[concat(parameters('siteName'),'.',parameters('domainName'))]",
     "agentVmSubnetId": "[concat(parameters('vnetId'), '/subnets/', parameters('agentSubnetName'))]",
-    "aseSubnetId": "[concat(parameters('vnetId'), '/subnets/', parameters('aseSubnetName'))]"
+    "aseSubnetId": "[concat(parameters('vnetId'), '/subnets/', parameters('aseSubnetName'))]",
+    "agentVmResourceGroup": "[if(equals(parameters('agentVmResourceGroup'), ''), resourceGroup().name, parameters('agentVmResourceGroup'))]"
   },
   "resources": [
     {
@@ -171,6 +179,8 @@
       "apiVersion": "2017-05-10",
       "type": "Microsoft.Resources/deployments",
       "name": "[concat('agentVM', uniqueString(resourceGroup().Id))]",
+      "resourceGroup": "[variables('agentVmResourceGroup')]",
+      "subscriptionId": "[subscription().id]",
       "properties": {
         "mode": "Incremental",
         "templateLink": {
