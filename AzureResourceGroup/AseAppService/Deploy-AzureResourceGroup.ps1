@@ -47,8 +47,6 @@ if ($UploadArtifacts) {
 
     # Create DSC configuration archive
     if (Test-Path $DSCSourceFolder) {
-        Write-Host "DSC Source Folder $DSCSourceFolder"
-
         $DSCSourceFilePaths = @(Get-ChildItem $DSCSourceFolder -File -Filter '*.ps1' | ForEach-Object -Process {$_.FullName})
         foreach ($DSCSourceFilePath in $DSCSourceFilePaths) {
             $DSCArchiveFilePath = $DSCSourceFilePath.Substring(0, $DSCSourceFilePath.Length - 4) + '.zip'

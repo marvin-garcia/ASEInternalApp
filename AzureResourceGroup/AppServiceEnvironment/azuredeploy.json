@@ -20,18 +20,6 @@
         "description": "Name of the App Service Environment"
       }
     },
-    "appServicePlanName": {
-      "type": "string",
-      "metadata": {
-        "description": "App service plan name"
-      }
-    },
-    "siteName": {
-      "type": "string",
-      "metadata": {
-        "description": "App site name"
-      }
-    },
     "pfxBlobString": {
       "type": "string",
       "metadata": {
@@ -56,6 +44,20 @@
       "allowedValues": [ 0, 1, 2, 3 ],
       "metadata": {
         "description": "0 = public VIP only, 1 = only ports 80/443 are mapped to ILB VIP, 2 = only FTP ports are mapped to ILB VIP, 3 = both ports 80/443 and FTP ports are mapped to an ILB VIP."
+      }
+    },
+    "siteName": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "App site name. Leave empty if you don't want to create an App Service inside the ASE"
+      }
+    },
+    "appServicePlanName": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "App service plan name"
       }
     },
     "pricingTier": {
@@ -91,9 +93,10 @@
     "subnetName": "[split(parameters('subnetId'), '/')[10]]",
     "vnetId": "[resourceId(variables('vnetResourceGroupName'), 'Microsoft.Network/virtualNetworks', variables('vnetName'))]",
 
-    "ilbCertTemplateURL": "[concat(parameters('_artifactsLocation'), '/AseWebApp/nested-templates/ase-ilb-certificate.json')]",
-
     "certName": "[concat('DefaultCertificateFor_', parameters('aseName'), '_InternalLoadBalancingASE')]",
+
+    "ilbCertTemplateURL": "[concat(parameters('_artifactsLocation'), '/AseWebApp/nested-templates/ase-ilb-certificate.json')]",
+    "appServiceTemplateURL": "[concat(parameters('_artifactsLocation'), '/AppServiceEnvironment/azuredeploy.json')]",
 
     "locationLUT": {
       "usgovvirginia": "USGov Virginia",
@@ -185,41 +188,35 @@
       }
     },
     {
-      "apiVersion": "2016-09-01",
-      "type": "Microsoft.Web/serverfarms",
-      "name": "[parameters('appServicePlanName')]",
-      "location": "[variables('locationLUT')[resourceGroup().location]]",
+      "condition": "[not(empty(parameters('siteName')))]",
+      "apiVersion": "2017-05-10",
+      "type": "Microsoft.Resources/deployments",
+      "name": "AppService",
       "dependsOn": [
-        "[resourceId('Microsoft.Web/hostingEnvironments', parameters('aseName'))]",
-        "[resourceId('Microsoft.Resources/deployments', 'SetILBCert')]"
+        "SetILBCert"
       ],
       "properties": {
-        "name": "[parameters('appServicePlanName')]",
-        "hostingEnvironmentProfile": {
-          "id": "[resourceId('Microsoft.Web/hostingEnvironments', parameters('aseName'))]"
-        }
-      },
-      "sku": {
-        "name": "[concat('I',parameters('pricingTier'))]",
-        "tier": "Isolated",
-        "size": "[concat('I',parameters('pricingTier'))]",
-        "family": "I",
-        "capacity": "[parameters('capacity')]"
-      }
-    },
-    {
-      "apiVersion": "2016-08-01",
-      "name": "[parameters('siteName')]",
-      "type": "Microsoft.Web/sites",
-      "location": "[variables('locationLUT')[resourceGroup().location]]",
-      "dependsOn": [
-        "[concat('Microsoft.Web/serverFarms/', parameters('appServicePlanName'))]"
-      ],
-      "properties": {
-        "name": "[parameters('siteName')]",
-        "serverFarmId": "[resourceId('Microsoft.Web/serverFarms', parameters('appServicePlanName'))]",
-        "hostingEnvironmentProfile": {
-          "id": "[resourceId('Microsoft.Web/hostingEnvironments', parameters('aseName'))]"
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('appServiceTemplateURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "aseName": {
+            "value": "[parameters('aseName')]"
+          },
+          "appServicePlanName": {
+            "value": "[parameters('appServicePlanName')]"
+          },
+          "siteName": {
+            "value": "[parameters('siteName')]"
+          },
+          "pricingTier": {
+            "value": "[parameters('pricingTier')]"
+          },
+          "capacity": {
+            "value": "[parameters('capacity')]"
+          }
         }
       }
     }

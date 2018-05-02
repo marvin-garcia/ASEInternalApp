@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2015
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "DevOpsAseWebApp", "WebAppILBASE\DevOpsAseWebApp.deployproj", "{F0222951-9CCE-46F6-A97B-E974C9FF388B}"
-EndProject
 Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "AgentVM", "AgentVM\AgentVM.deployproj", "{2B79B6C2-5EEB-43A8-ABA9-F2C033418066}"
 EndProject
-Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "AseWebApp", "AseWebApp\AseWebApp.deployproj", "{7115EF39-D4E1-43D3-B0FD-3623061ED6B1}"
+Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "DevOpsAse", "DevOpsAse\DevOpsAse.deployproj", "{621AB447-041E-4CA1-86B3-7473A6C62931}"
+EndProject
+Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "AseAppService", "AseAppService\AseAppService.deployproj", "{BA8C1009-1458-4CB9-9578-7F059801665E}"
+EndProject
+Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "AppServiceEnvironment", "AppServiceEnvironment\AppServiceEnvironment.deployproj", "{5EEBAFA7-19CE-4325-9A31-6699861269AA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,18 +17,22 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F0222951-9CCE-46F6-A97B-E974C9FF388B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F0222951-9CCE-46F6-A97B-E974C9FF388B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F0222951-9CCE-46F6-A97B-E974C9FF388B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F0222951-9CCE-46F6-A97B-E974C9FF388B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2B79B6C2-5EEB-43A8-ABA9-F2C033418066}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2B79B6C2-5EEB-43A8-ABA9-F2C033418066}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B79B6C2-5EEB-43A8-ABA9-F2C033418066}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B79B6C2-5EEB-43A8-ABA9-F2C033418066}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7115EF39-D4E1-43D3-B0FD-3623061ED6B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7115EF39-D4E1-43D3-B0FD-3623061ED6B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7115EF39-D4E1-43D3-B0FD-3623061ED6B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7115EF39-D4E1-43D3-B0FD-3623061ED6B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{621AB447-041E-4CA1-86B3-7473A6C62931}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{621AB447-041E-4CA1-86B3-7473A6C62931}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{621AB447-041E-4CA1-86B3-7473A6C62931}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{621AB447-041E-4CA1-86B3-7473A6C62931}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA8C1009-1458-4CB9-9578-7F059801665E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA8C1009-1458-4CB9-9578-7F059801665E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA8C1009-1458-4CB9-9578-7F059801665E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA8C1009-1458-4CB9-9578-7F059801665E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5EEBAFA7-19CE-4325-9A31-6699861269AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5EEBAFA7-19CE-4325-9A31-6699861269AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5EEBAFA7-19CE-4325-9A31-6699861269AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5EEBAFA7-19CE-4325-9A31-6699861269AA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

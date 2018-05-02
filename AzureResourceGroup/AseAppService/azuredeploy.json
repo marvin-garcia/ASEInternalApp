@@ -1,0 +1,116 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "aseName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the App Service Environment"
+      }
+    },
+    "appServicePlanName": {
+      "type": "string",
+      "metadata": {
+        "description": "App service plan name"
+      }
+    },
+    "siteName": {
+      "type": "string",
+      "metadata": {
+        "description": "App site name"
+      }
+    },
+    "pricingTier": {
+      "type": "string",
+      "allowedValues": [
+        "1",
+        "2",
+        "3"
+      ],
+      "defaultValue": "1",
+      "metadata": {
+        "description": "Defines pricing tier for workers: 1 = Isolated 1, 2 = Isolated 2, 3 = Isolated 3."
+      }
+    },
+    "capacity": {
+      "type": "int",
+      "defaultValue": 1,
+      "metadata": {
+        "description": "Defines the number of instances that will be allocated to the app service plan."
+      }
+    }
+  },
+  "variables": {
+    "locationLUT": {
+      "usgovvirginia": "USGov Virginia",
+      "usgoviowa": "USGov Iowa",
+      "usdodeast": "USDoD East",
+      "usdodcentral": "USDoD Central",
+      "usgovtexas": "USGov Texas",
+      "usgovarizona": "USGov Arizona",
+      "eastasia": "East Asia",
+      "southeastasia": "Southeast Asia",
+      "centralus": "Central US",
+      "eastus": "East US",
+      "eastus2": "East US 2",
+      "westus": "West US",
+      "northcentralus": "North Central US",
+      "southcentralus": "South Central US",
+      "northeurope": "North Europe",
+      "westeurope": "West Europe",
+      "japanwest": "Japan West",
+      "japaneast": "Japan East",
+      "brazilsouth": "Brazil South",
+      "australiaeast": "Australia East",
+      "australiasoutheast": "Australia Southeast",
+      "southindia": "South India",
+      "centralindia": "Central India",
+      "westindia": "West India",
+      "canadacentral": "Canada Central",
+      "canadaeast": "Canada East",
+      "uksouth": "UK South",
+      "ukwest": "UK West",
+      "westcentralus": "West Central US",
+      "westus2": "West US 2",
+      "koreacentral": "Korea Central",
+      "koreasouth": "Korea South"
+    }
+  },
+  "resources": [
+    {
+      "apiVersion": "2016-09-01",
+      "type": "Microsoft.Web/serverfarms",
+      "name": "[parameters('appServicePlanName')]",
+      "location": "[variables('locationLUT')[resourceGroup().location]]",
+      "properties": {
+        "name": "[parameters('appServicePlanName')]",
+        "hostingEnvironmentProfile": {
+          "id": "[resourceId('Microsoft.Web/hostingEnvironments', parameters('aseName'))]"
+        }
+      },
+      "sku": {
+        "name": "[concat('I',parameters('pricingTier'))]",
+        "tier": "Isolated",
+        "size": "[concat('I',parameters('pricingTier'))]",
+        "family": "I",
+        "capacity": "[parameters('capacity')]"
+      }
+    },
+    {
+      "apiVersion": "2016-08-01",
+      "name": "[parameters('siteName')]",
+      "type": "Microsoft.Web/sites",
+      "location": "[variables('locationLUT')[resourceGroup().location]]",
+      "dependsOn": [
+        "[concat('Microsoft.Web/serverFarms/', parameters('appServicePlanName'))]"
+      ],
+      "properties": {
+        "name": "[parameters('siteName')]",
+        "serverFarmId": "[resourceId('Microsoft.Web/serverFarms', parameters('appServicePlanName'))]",
+        "hostingEnvironmentProfile": {
+          "id": "[resourceId('Microsoft.Web/hostingEnvironments', parameters('aseName'))]"
+        }
+      }
+    }
+  ]
+}

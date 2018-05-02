@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>f0222951-9cce-46f6-a97b-e974c9ff388b</ProjectGuid>
+    <ProjectGuid>ba8c1009-1458-4cb9-9578-7f059801665e</ProjectGuid>
   </PropertyGroup>
   <PropertyGroup>
     <PrepareForBuildDependsOn>
@@ -23,14 +23,12 @@
   <Import Condition=" Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Deployment\1.1\DeploymentProject.targets') " Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Deployment\1.1\DeploymentProject.targets" />
   <!-- vertag<:>end -->
   <ItemGroup>
-    <Content Include="azuredeploy.parameters.json" />
     <Content Include="azuredeploy.json" />
+    <Content Include="azuredeploy.parameters.json" />
     <None Include="Deployment.targets">
       <Visible>False</Visible>
     </None>
     <Content Include="Deploy-AzureResourceGroup.ps1" />
-    <Content Include="README.md" />
-    <None Include="pre-requisites\PrepareAseEnvironment.ps1" />
   </ItemGroup>
   <Target Name="GetReferenceAssemblyPaths" />
 </Project>

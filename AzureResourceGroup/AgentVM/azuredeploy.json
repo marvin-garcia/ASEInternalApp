@@ -121,7 +121,7 @@
     },
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
-      "name": "[concat(parameters('vmName'), '/configureagent')]",
+      "name": "[concat(parameters('vmName'), '/ConfigureAgent')]",
       "dependsOn": [
         "[resourceId('Microsoft.Resources/deployments', 'AgentVM')]"
       ],

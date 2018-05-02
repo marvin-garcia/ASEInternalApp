@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>7115ef39-d4e1-43d3-b0fd-3623061ed6b1</ProjectGuid>
+    <ProjectGuid>621ab447-041e-4ca1-86b3-7473a6c62931</ProjectGuid>
   </PropertyGroup>
   <PropertyGroup>
     <PrepareForBuildDependsOn>
@@ -29,8 +29,8 @@
       <Visible>False</Visible>
     </None>
     <Content Include="Deploy-AzureResourceGroup.ps1" />
-    <None Include="nested-templates\ase-ilb-certificate.json" />
     <None Include="pre-requisites\PrepareAseEnvironment.ps1" />
+    <None Include="pre-requisites\RunScript.ps1" />
   </ItemGroup>
   <Target Name="GetReferenceAssemblyPaths" />
 </Project>
