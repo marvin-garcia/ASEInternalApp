@@ -14,8 +14,8 @@ param(
     [Parameter(Mandatory, ParameterSetName="aseenv")]
     [String]$VnetName,
 
-	[Parameter(Mandatory)]
-    [String]$ArtifactsLocation,
+	[Parameter(Mandatory=$false)]
+    [String]$ArtifactsLocation = "https://github.com/marvin-garcia/ASEInternalApp/raw/master/AzureResourceGroup",
 
 	[Parameter(Mandatory)]
 	[Switch]$SaveToFile,

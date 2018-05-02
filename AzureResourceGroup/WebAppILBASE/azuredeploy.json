@@ -112,13 +112,13 @@
       }
     },
     "_artifactsLocation": {
-      "type": "string"
+      "type": "string",
+      "defaultValue": "https://github.com/marvin-garcia/ASEInternalApp/raw/master/AzureResourceGroup"
     }
   },
   "variables": {
-    "agentTemplateURL": "[concat(parameters('_artifactsLocation'), '/agentvm/azuredeploy.json')]",
-    "aseTemplateURL": "[concat(parameters('_artifactsLocation'), '/asewebapp/azuredeploy.json')]",
-    "buildAgentVmName": "build-agent",
+    "agentTemplateURL": "[concat(parameters('_artifactsLocation'), '/AgentVM/azuredeploy.json')]",
+    "aseTemplateURL": "[concat(parameters('_artifactsLocation'), '/AseWebApp/azuredeploy.json')]",
     "AppDns": "[concat(parameters('siteName'),'.',parameters('domainName'))]",
     "agentVmSubnetId": "[concat(parameters('vnetId'), '/subnets/', parameters('agentSubnetName'))]",
     "aseSubnetId": "[concat(parameters('vnetId'), '/subnets/', parameters('aseSubnetName'))]",

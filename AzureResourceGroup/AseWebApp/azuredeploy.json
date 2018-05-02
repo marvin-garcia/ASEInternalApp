@@ -79,6 +79,7 @@
     },
     "_artifactsLocation": {
       "type": "string",
+      "defaultValue": "https://github.com/marvin-garcia/ASEInternalApp/raw/master/AzureResourceGroup",
       "metadata": {
         "description": "Artifacts location Url"
       }
@@ -90,7 +91,7 @@
     "subnetName": "[split(parameters('subnetId'), '/')[10]]",
     "vnetId": "[resourceId(variables('vnetResourceGroupName'), 'Microsoft.Network/virtualNetworks', variables('vnetName'))]",
 
-    "ilbCertTemplateURL": "[concat(parameters('_artifactsLocation'),'/asewebapp/nested-templates/ase-ilb-certificate.json')]",
+    "ilbCertTemplateURL": "[concat(parameters('_artifactsLocation'), '/AseWebApp/nested-templates/ase-ilb-certificate.json')]",
 
     "certName": "[concat('DefaultCertificateFor_', parameters('aseName'), '_InternalLoadBalancingASE')]",
 

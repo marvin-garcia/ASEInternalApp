@@ -61,14 +61,15 @@
     },
     "_artifactsLocation": {
       "type": "string",
+      "defaultValue": "https://github.com/marvin-garcia/ASEInternalApp/raw/master/AzureResourceGroup",
       "metadata": {
         "description": "Artifacts location Url"
       }
     }
   },
   "variables": {
-    "windowsVmTemplateURL": "[concat(parameters('_artifactsLocation'), '/agentvm/nested-templates/windowsvm.json')]",
-    "AgentConfigureModuleURL": "[concat(parameters('_artifactsLocation'), '/agentvm/dsc/ConfigureASEBuildAgent.ps1.zip')]",
+    "windowsVmTemplateURL": "[concat(parameters('_artifactsLocation'), '/AgentVM/nested-templates/windowsvm.json')]",
+    "AgentConfigureModuleURL": "[concat(parameters('_artifactsLocation'), '/AgentVM/DSC/ConfigureASEBuildAgent.ps1.zip')]",
     "AgentConfigureFunction": "ConfigureASEBuildAgent.ps1\\ConfigureASEBuildAgentDsc",
     "agentDownloadUrl": "https://vstsagentpackage.azureedge.net/agent/2.127.0/vsts-agent-win-x64-2.127.0.zip"
 

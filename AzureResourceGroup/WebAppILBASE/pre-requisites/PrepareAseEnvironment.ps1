@@ -33,8 +33,8 @@ param(
 	[Parameter(Mandatory=$true, ParameterSetName="agentvm")]
     [String]$AseIP,
 
-	[Parameter(Mandatory)]
-    [String]$ArtifactsLocation,
+	[Parameter(Mandatory=$false)]
+    [String]$ArtifactsLocation = "https://github.com/marvin-garcia/ASEInternalApp/raw/master/AzureResourceGroup",
 
     [Parameter(Mandatory=$false)]
     [String]$OutFile=".\azuredeploy.parameters.json"
