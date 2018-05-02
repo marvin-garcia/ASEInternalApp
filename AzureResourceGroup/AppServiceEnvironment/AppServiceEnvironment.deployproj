@@ -29,6 +29,9 @@
       <Visible>False</Visible>
     </None>
     <Content Include="Deploy-AzureResourceGroup.ps1" />
+    <None Include="nested-templates\ase-ilb-certificate.json" />
+    <None Include="pre-requisites\PrepareAseEnvironment.ps1" />
+    <None Include="pre-requisites\RunScript.ps1" />
   </ItemGroup>
   <Target Name="GetReferenceAssemblyPaths" />
 </Project>
