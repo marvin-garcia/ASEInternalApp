@@ -129,7 +129,7 @@
   },
   "variables": {
     "agentTemplateURL": "[concat(parameters('_artifactsLocation'), '/AgentVM/azuredeploy.json')]",
-    "aseTemplateURL": "[concat(parameters('_artifactsLocation'), '/AseWebApp/azuredeploy.json')]",
+    "aseTemplateURL": "[concat(parameters('_artifactsLocation'), '/AppServiceEnviroment/azuredeploy.json')]",
     "AppDns": "[concat(parameters('siteName'),'.',parameters('domainName'))]",
     "agentVmSubnetId": "[concat(parameters('vnetId'), '/subnets/', parameters('agentSubnetName'))]",
     "aseSubnetId": "[concat(parameters('vnetId'), '/subnets/', parameters('aseSubnetName'))]",
@@ -191,7 +191,6 @@
       "type": "Microsoft.Resources/deployments",
       "name": "[concat('agentVM', uniqueString(resourceGroup().Id))]",
       "resourceGroup": "[variables('agentVmResourceGroup')]",
-      "subscriptionId": "[subscription().id]",
       "properties": {
         "mode": "Incremental",
         "templateLink": {
