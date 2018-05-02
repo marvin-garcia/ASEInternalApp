@@ -90,7 +90,7 @@
     "subnetName": "[split(parameters('subnetId'), '/')[10]]",
     "vnetId": "[resourceId(variables('vnetResourceGroupName'), 'Microsoft.Network/virtualNetworks', variables('vnetName'))]",
 
-    "ilbCertTemplateURL": "[concat(parameters('_artifactsLocation'),'/nested-templates/ase-ilb-certificate.json')]",
+    "ilbCertTemplateURL": "[concat(parameters('_artifactsLocation'),'/asewebapp/nested-templates/ase-ilb-certificate.json')]",
 
     "certName": "[concat('DefaultCertificateFor_', parameters('aseName'), '_InternalLoadBalancingASE')]",
 

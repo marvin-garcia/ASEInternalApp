@@ -29,16 +29,8 @@
       <Visible>False</Visible>
     </None>
     <Content Include="Deploy-AzureResourceGroup.ps1" />
-    <Content Include="nested-templates\ase-agent.json" />
-    <Content Include="nested-templates\app-service-environment.json" />
-    <Content Include="parameters\app-service-environment.parameters.json" />
-    <Content Include="parameters\ase-agent.parameters.json" />
     <Content Include="README.md" />
-    <None Include="DSC\ConfigureASEBuildAgent.ps1" />
-    <None Include="DSC\ConfigureASEBuildAgent.ps1.zip" />
-    <None Include="nested-templates\ase-ilb-certificate.json" />
     <None Include="pre-requisites\PrepareAseEnvironment.ps1" />
-    <None Include="primitives\windowsvm.json" />
   </ItemGroup>
   <Target Name="GetReferenceAssemblyPaths" />
 </Project>

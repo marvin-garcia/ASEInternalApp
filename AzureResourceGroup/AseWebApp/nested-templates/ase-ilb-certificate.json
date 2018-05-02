@@ -49,7 +49,7 @@
         "pfxBlob": "[parameters('pfxBlobString')]",
         "password": "[parameters('password')]",
         "hostingEnvironmentProfile": {
-          "id": "[resourceId('Microsoft.Web/hostingEnvironments',parameters('appServiceEnvironmentName'))]"
+          "id": "[resourceId('Microsoft.Web/hostingEnvironments', parameters('appServiceEnvironmentName'))]"
         }
       }
     },
@@ -71,7 +71,7 @@
         ]
       },
       "dependsOn": [
-        "[concat('Microsoft.Web/certificates/',parameters('certificateName'))]"
+        "[concat('Microsoft.Web/certificates/', parameters('certificateName'))]"
       ]
     }
   ]
