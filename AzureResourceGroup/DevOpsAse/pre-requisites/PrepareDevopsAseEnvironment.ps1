@@ -24,7 +24,7 @@ param(
     [String]$AseIP,
 
     [Parameter(Mandatory)]
-    [String]$VSTSProjectName,
+    [String]$VSTSAccountName,
 
     [Parameter(Mandatory=$false)]
     [String]$OutFile = ".\azuredeploy.parameters.json"
@@ -98,7 +98,7 @@ $templateParameters.Add("agentVmName", @{ "value" = "" })
 $templateParameters.Add("agentVmSize", @{ "value" = "Standard_DS2_v2" })
 $templateParameters.Add("agentVmAdminUsername", @{ "value" = "" })
 $templateParameters.Add("agentVmAdminPassword", @{ "value" = "" })
-$templateParameters.Add("TSServerUrl", @{ "value" = "https://$($VSTSProjectName).visualstudio.com" })
+$templateParameters.Add("TSServerUrl", @{ "value" = "https://$($VSTSAccountName).visualstudio.com" })
 $templateParameters.Add("AgentPool", @{ "value" = "" })
 $templateParameters.Add("PAToken", @{ "value" = "" })
 $templateParameters.Add("AseIP", @{ "value" = $AseIP })

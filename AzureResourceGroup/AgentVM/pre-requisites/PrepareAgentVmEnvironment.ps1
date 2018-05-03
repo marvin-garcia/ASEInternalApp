@@ -9,7 +9,7 @@ param(
     [securestring]$AdminPassword,
    
     [Parameter(Mandatory=$true, ParameterSetName="agentvm")]
-    [String]$VSTSProjectName,
+    [String]$VSTSAccountName,
 
     [Parameter(Mandatory=$true, ParameterSetName="agentvm")]
     [String]$AgentPool,
@@ -44,7 +44,7 @@ $templateParameters.Add("_artifactsLocation", @{ "value" = $ArtifactsLocation })
 $templateParameters.Add("vmName", @{ "value" = $VmName })
 $templateParameters.Add("AdminUsername", @{ "value" = $AdminUsername })
 $templateParameters.Add("AdminPassword", @{ "value" = (New-Object PSCredential "user", $AdminPassword).GetNetworkCredential().Password })
-$templateParameters.Add("TSServerUrl", @{ "value" = "https://$($VSTSProjectName).visualstudio.com" })
+$templateParameters.Add("TSServerUrl", @{ "value" = "https://$($VSTSAccountName).visualstudio.com" })
 $templateParameters.Add("AgentPool", @{ "value" = $AgentPool })
 $templateParameters.Add("PAToken", @{ "value" = $PersonalAccessToken })
 $templateParameters.Add("AseIP", @{ "value" = $AseIP })
