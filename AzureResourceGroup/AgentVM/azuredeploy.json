@@ -3,7 +3,17 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "subnetId": {
-      "type": "string"
+      "type": "string",
+      "metadata": {
+        "description": "Subnet Id"
+      }
+    },
+    "vmName": {
+      "type": "string",
+      "defaultValue": "ase-build-agent",
+      "metadata": {
+        "description": "Build agent VM name"
+      }
     },
     "vmSize": {
       "type": "string",
@@ -19,49 +29,77 @@
         "Standard_DS14_v2",
         "Standard_DS15_v2"
       ],
-      "defaultValue": "Standard_DS2_v2"
+      "defaultValue": "Standard_DS2_v2",
+      "metadata": {
+        "description": "Build agent VM size"
+      }
     },
     "adminUsername": {
       "type": "string",
-      "defaultValue": "EnterpriseAdmin"
+      "defaultValue": "EnterpriseAdmin",
+      "metadata": {
+        "description": "Build agent VM admin username"
+      }
     },
     "adminPassword": {
-      "type": "securestring"
-    },
-    "vmName": {
-      "type": "string",
-      "defaultValue": "ase-build-agent"
+      "type": "securestring",
+      "metadata": {
+        "description": "Build agent VM admin password"
+      }
     },
     "ImagePublisher": {
       "type": "string",
-      "defaultValue": "MicrosoftVisualStudio"
+      "defaultValue": "MicrosoftVisualStudio",
+      "metadata": {
+        "description": "VM image publisher"
+      }
     },
     "ImageOffer": {
       "type": "string",
-      "defaultValue": "VisualStudio"
+      "defaultValue": "VisualStudio",
+      "metadata": {
+        "description": "VM image offer"
+      }
     },
     "ImageSku": {
       "type": "string",
-      "defaultValue": "VS-2017-Ent-Latest-WS2016"
+      "defaultValue": "VS-2017-Ent-Latest-WS2016",
+      "metadata": {
+        "description": "VM image SKU"
+      }
     },
     "TSServerUrl": {
-      "type": "string"
+      "type": "string",
+      "metadata": {
+        "description": "VSTS/TFS server URL"
+      }
     },
     "AgentPool": {
-      "type": "string"
+      "type": "string",
+      "metadata": {
+        "description": "VSTS/TFS agent pool name"
+      }
     },
     "PAToken": {
-      "type": "string"
+      "type": "string",
+      "metadata": {
+        "description": "VSTS/TFS personal access token required to authorize the build agent VM. For more details go to https://docs.microsoft.com/en-us/vsts/accounts/use-personal-access-tokens-to-authenticate?view=vsts&viewFallbackFrom=tfs"
+      }
     },
     "AseIp": {
-      "type": "string"
+      "type": "string",
+      "metadata": {
+        "description": "App Service Environment IP address. You should obtain the value of this parameter by running the PS script PrepareAseEnvironment.ps1"
+      }
     },
     "AppDns": {
-      "type": "string"
+      "type": "string",
+      "metadata": {
+        "description": "DNS of the web app contained in the ASE"
+      }
     },
     "_artifactsLocation": {
       "type": "string",
-      "defaultValue": "https://github.com/marvin-garcia/ASEInternalApp/raw/master/AzureResourceGroup",
       "metadata": {
         "description": "Artifacts location Url"
       }

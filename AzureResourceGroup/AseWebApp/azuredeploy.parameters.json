@@ -2,25 +2,7 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "subnetId": {
-      "value": ""
-    },
     "aseName": {
-      "value": ""
-    },
-    "domainName": {
-      "value": ""
-    },
-    "internalLoadBalancingMode": {
-      "value": ""
-    },
-    "pfxBlobString": {
-      "value": ""
-    },
-    "certificatePassword": {
-      "value": ""
-    },
-    "certificateThumbprint": {
       "value": ""
     },
     "appServicePlanName": {
@@ -33,9 +15,6 @@
       "value": ""
     },
     "capacity": {
-      "value": ""
-    },
-    "_artifactsLocation": {
       "value": ""
     }
   }

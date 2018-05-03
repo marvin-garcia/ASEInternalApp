@@ -1,35 +1,48 @@
-{
-  "_artifactsLocation": {
-    "value": "https://ilbasetemplates.blob.core.windows.net"
-  },
-  "adminPassword": {
-    "value": "P@$$w0rd!!"
-  },
-  "adminUsername": {
-    "value": "EnterpriseAdmin"
-  },
-  "AgentPool": {
-    "value": "agentpool"
-  },
-  "AppDns": {
-    "value": "InternalAseApp.corp-internal.com"
-  },
-  "AseIp": {
-    "value": "10.1.1.11"
-  },
-  "PAToken": {
-    "value": "2zegwwxroswe5iamp6jq2nwg4cwxiunzjkqhedygs5n3apwyn6ca"
-  },
-  "subnetId": {
-    "value": "/subscriptions/f0cf2edb-86a7-44b6-9c02-9c5fee5c618d/resourceGroups/TextronLab/providers/Microsoft.Network/virtualNetworks/Corp1/subnets/VSTSAgentSubnet"
-  },
-  "TSServerUrl": {
-    "value": "https://marv-playground.visualstudio.com"
-  },
-  "vmName": {
-    "value": "build-agent"
-  },
-  "vmSize": {
-    "value": "Standard_DS2_v2"
+﻿{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "subnetId": {
+      "value": ""
+    },
+    "vmName": {
+      "value": ""
+    },
+    "vmSize": {
+      "value": ""
+    },
+    "adminUsername": {
+      "value": ""
+    },
+    "adminPassword": {
+      "value": ""
+    },
+    "ImagePublisher": {
+      "value": ""
+    },
+    "ImageOffer": {
+      "value": ""
+    },
+    "ImageSku": {
+      "value": ""
+    },
+    "TSServerUrl": {
+      "value": ""
+    },
+    "AgentPool": {
+      "value": ""
+    },
+    "PAToken": {
+      "value": ""
+    },
+    "AseIp": {
+      "value": ""
+    },
+    "AppDns": {
+      "value": ""
+    },
+    "_artifactsLocation": {
+      "value": ""
+    }
   }
 }

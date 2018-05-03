@@ -8,16 +8,25 @@ param(
     [Parameter(Mandatory)]
     [securestring]$CertificatePassword,
 
-    [Parameter(Mandatory)]
+	[Parameter(Mandatory)]
     [String]$VnetResourceGroupName,
 
     [Parameter(Mandatory)]
     [String]$VnetName,
 
 	[Parameter(Mandatory)]
-    [String]$SubnetName,
+    [String]$AseSubnetName,
 
-	[Parameter(Mandatory=$false)]
+    [Parameter(Mandatory)]
+    [String]$AgentVmSubnetName,
+
+    [Parameter(Mandatory=$false)]
+    [String]$AseIP,
+
+    [Parameter(Mandatory)]
+    [String]$VSTSProjectName,
+
+    [Parameter(Mandatory=$false)]
     [String]$OutFile = ".\azuredeploy.parameters.json"
 )
 
@@ -26,6 +35,8 @@ if (-not [bool](([System.Security.Principal.WindowsIdentity]::GetCurrent()).grou
 {
     throw "You must have administrator priveleges to run this script."
 }
+
+#region ASE env
 
 #region Handle certificate
 
@@ -52,24 +63,46 @@ $pfxBlobString = [System.Convert]::ToBase64String($fileContentBytes)
 
 #region Get vnet settings
 $vnet = Get-AzureRmVirtualNetwork -ResourceGroupName $VnetResourceGroupName -Name $VnetName
-$subnet = $vnet.Subnets | ? { $_.Name -eq $SubnetName }
-$subnetId = $subnet.Id
+$vnetId = $vnet.Id
+
+#region Set ASE IP if not passed
+if ([string]::IsNullOrEmpty($AseIP))
+{
+    $subnet = $vnet.Subnets | ? { $_.Name -eq $AseSubnetName }
+    $startAddress = $subnet.AddressPrefix.Split('/')[0]
+    $3Octects = $startAddress.Split('.')[0..2] -join '.'
+    $4thOctect = [int]($startAddress.Split('.')[3]) + 11
+
+    $AseIP = "$($3Octects).$($4thOctect)"
+}
+#endregion
+
 #endregion
 
 #region Add parameters
 $templateParameters = @{}
-$templateParameters.Add("subnetId", @{ "value" = $subnetId })
+$templateParameters.Add("vnetId", @{ "value" = $vnetId })
 $templateParameters.Add("aseName", @{ "value" = "" })
 $templateParameters.Add("domainName", @{ "value" = $DomainName })
 $templateParameters.Add("internalLoadBalancingMode", @{ "value" = 3 })
 $templateParameters.Add("pfxBlobString", @{ "value" = $pfxBlobString })
 $templateParameters.Add("certificatePassword", @{ "value" = (New-Object PSCredential "user", $CertificatePassword).GetNetworkCredential().Password })
 $templateParameters.Add("certificateThumbprint", @{ "value" = $certificate.Thumbprint })
+$templateParameters.Add("aseSubnetName", @{ "value" = $AseSubnetName })
 $templateParameters.Add("appServicePlanName", @{ "value" = "" })
 $templateParameters.Add("siteName", @{ "value" = "" })
 $templateParameters.Add("pricingTier", @{ "value" = "1" })
 $templateParameters.Add("capacity", @{ "value" = 1 })
-$templateParameters.Add("_artifactsLocation", @{ "value" = "" })
+$templateParameters.Add("agentVmResourceGroup", @{ "value" = "" })
+$templateParameters.Add("agentVmName", @{ "value" = "" })
+$templateParameters.Add("agentVmSize", @{ "value" = "Standard_DS2_v2" })
+$templateParameters.Add("agentVmAdminUsername", @{ "value" = "" })
+$templateParameters.Add("agentVmAdminPassword", @{ "value" = "" })
+$templateParameters.Add("TSServerUrl", @{ "value" = "https://$($VSTSProjectName).visualstudio.com" })
+$templateParameters.Add("AgentPool", @{ "value" = "" })
+$templateParameters.Add("PAToken", @{ "value" = "" })
+$templateParameters.Add("AseIP", @{ "value" = $AseIP })
+$templateParameters.Add("agentSubnetName", @{ "value" = $AgentVmSubnetName })
 
 $templateParameters | ConvertTo-Json -Depth 10 | Out-File $OutFile
 

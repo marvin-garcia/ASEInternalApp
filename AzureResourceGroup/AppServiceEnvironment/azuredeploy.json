@@ -8,34 +8,16 @@
         "description": "Subnet Id"
       }
     },
-    "domainName": {
-      "type": "string",
-      "metadata": {
-        "description": "Set this to the root domain associated with the ASE. For example: contoso.com"
-      }
-    },
     "aseName": {
       "type": "string",
       "metadata": {
-        "description": "Name of the App Service Environment"
+        "description": "App Service Environment name"
       }
     },
-    "pfxBlobString": {
+    "domainName": {
       "type": "string",
       "metadata": {
-        "description": ""
-      }
-    },
-    "certificateThumbprint": {
-      "type": "string",
-      "metadata": {
-        "description": "PFX certificste thumbprint"
-      }
-    },
-    "certificatePassword": {
-      "type": "securestring",
-      "metadata": {
-        "description": "PFX certificate password"
+        "description": "App Service Environment domain name. For example: corp-internal.com"
       }
     },
     "internalLoadBalancingMode": {
@@ -46,18 +28,36 @@
         "description": "0 = public VIP only, 1 = only ports 80/443 are mapped to ILB VIP, 2 = only FTP ports are mapped to ILB VIP, 3 = both ports 80/443 and FTP ports are mapped to an ILB VIP."
       }
     },
-    "siteName": {
-      "type": "string",
-      "defaultValue": "",
+    "pfxBlobString": {
+      "type": "securestring",
       "metadata": {
-        "description": "App site name. Leave empty if you don't want to create an App Service inside the ASE"
+        "description": "PFX certificate blob string content. Used to configure the SSL certificate for the internal load balancer. You can obtain the value of this parameter by running the PS script PrepareDevopsAseEnvironment.ps1"
+      }
+    },
+    "certificatePassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Certificate password. You should obtain the value of this parameter by running the PS script PrepareDevopsAseEnvironment.ps1"
+      }
+    },
+    "certificateThumbprint": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Certificate thumbprint. You should obtain the value of this parameter by running the PS script PrepareDevopsAseEnvironment.ps1"
       }
     },
     "appServicePlanName": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "App service plan name"
+        "description": "The name of the App Service plan to host the web app. Leave it blank if you don't plan to create a web app right now"
+      }
+    },
+    "siteName": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Web App site name. Leave it blank if you don't plan to create a web app right now"
       }
     },
     "pricingTier": {
@@ -81,7 +81,6 @@
     },
     "_artifactsLocation": {
       "type": "string",
-      "defaultValue": "https://github.com/marvin-garcia/ASEInternalApp/raw/master/AzureResourceGroup",
       "metadata": {
         "description": "Artifacts location Url"
       }

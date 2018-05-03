@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>ba8c1009-1458-4cb9-9578-7f059801665e</ProjectGuid>
+    <ProjectGuid>2875f2b5-fac0-4277-b524-15f3049752d9</ProjectGuid>
   </PropertyGroup>
   <PropertyGroup>
     <PrepareForBuildDependsOn>
@@ -24,7 +24,7 @@
   <!-- vertag<:>end -->
   <ItemGroup>
     <Content Include="azuredeploy.json" />
-    <Content Include="azuredeploy.parameters.json" />
+    <None Include="azuredeploy.parameters.json" />
     <None Include="Deployment.targets">
       <Visible>False</Visible>
     </None>

@@ -2,12 +2,23 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "vnetId": {
+      "type": "string",
+      "metadata": {
+        "description": "Existing vnet Id to host the ASE and build agent VM"
+      }
+    },
     "aseName": {
-      "type": "string"
+      "type": "string",
+      "metadata": {
+        "description": "App Service Environment name"
+      }
     },
     "domainName": {
       "type": "string",
-      "defaultValue": "contoso-internal.us"
+      "metadata": {
+        "description": "App Service Environment domain name. For example: corp-internal.com"
+      }
     },
     "internalLoadBalancingMode": {
       "type": "int",
@@ -18,23 +29,41 @@
       }
     },
     "pfxBlobString": {
-      "type": "securestring"
+      "type": "securestring",
+      "metadata": {
+        "description": "PFX certificate blob string content. Used to configure the SSL certificate for the internal load balancer. You can obtain the value of this parameter by running the PS script PrepareDevopsAseEnvironment.ps1"
+      }
     },
     "certificatePassword": {
-      "type": "securestring"
+      "type": "securestring",
+      "metadata": {
+        "description": "Certificate password. You should obtain the value of this parameter by running the PS script PrepareDevopsAseEnvironment.ps1"
+      }
     },
     "certificateThumbprint": {
-      "type": "securestring"
+      "type": "securestring",
+      "metadata": {
+        "description": "Certificate thumbprint. You should obtain the value of this parameter by running the PS script PrepareDevopsAseEnvironment.ps1"
+      }
+    },
+    "aseSubnetName": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of the subnet that will host the App Service Environment"
+      }
     },
     "appServicePlanName": {
       "type": "string",
-      "defaultValue": ""
+      "defaultValue": "",
+      "metadata": {
+        "description": "The name of the App Service plan to host the web app. Leave it blank if you don't plan to create a web app right now"
+      }
     },
     "siteName": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "App site name. Leave empty if you don't want to create an App Service inside the ASE"
+        "description": "Web App site name. Leave it blank if you don't plan to create a web app right now"
       }
     },
     "pricingTier": {
@@ -83,53 +112,59 @@
         "Standard_DS14_v2",
         "Standard_DS15_v2"
       ],
-      "defaultValue": "Standard_DS2_v2"
+      "defaultValue": "Standard_DS2_v2",
+      "metadata": {
+        "description": "Build agent VM size"
+      }
     },
-    "adminUsername": {
+    "agentVmAdminUsername": {
       "type": "string",
-      "defaultValue": "EnterpriseAdmin"
+      "defaultValue": "EnterpriseAdmin",
+      "metadata": {
+        "description": "Build agent VM admin username"
+      }
     },
-    "adminPassword": {
-      "type": "securestring"
+    "agentVmAdminPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Build agent VM admin password"
+      }
     },
     "TSServerUrl": {
-      "type": "string"
+      "type": "string",
+      "metadata": {
+        "description": "VSTS/TFS server URL"
+      }
     },
     "AgentPool": {
+      "metadata": {
+        "description": "VSTS/TFS agent pool name"
+      },
       "type": "string"
     },
     "PAToken": {
-      "type": "securestring"
-    },
-    "AseIP": {
-      "type": "string"
-    },
-    "vnetId": {
-      "type": "string",
+      "type": "securestring",
       "metadata": {
-        "description": "Existing vnet Id"
+        "description": "VSTS/TFS personal access token required to authorize the build agent VM. For more details go to https://docs.microsoft.com/en-us/vsts/accounts/use-personal-access-tokens-to-authenticate?view=vsts&viewFallbackFrom=tfs"
       }
     },
-    "aseSubnetName": {
+    "AseIP": {
       "type": "string",
       "metadata": {
-        "description": "Subnet name that will contain the App Service Environment"
+        "description": "App Service Environment IP address. You should obtain the value of this parameter by running the PS script PrepareDevopsAseEnvironment.ps1"
       }
     },
     "agentSubnetName": {
       "type": "string",
       "metadata": {
-        "description": "Subnet name that will contain the ASE agent VM"
+        "description": "The name of the subnet that will host the build agent VM"
       }
-    },
-    "_artifactsLocation": {
-      "type": "string",
-      "defaultValue": "https://github.com/marvin-garcia/ASEInternalApp/raw/master/AzureResourceGroup"
     }
   },
   "variables": {
-    "agentTemplateURL": "[concat(parameters('_artifactsLocation'), '/AgentVM/azuredeploy.json')]",
-    "aseTemplateURL": "[concat(parameters('_artifactsLocation'), '/AppServiceEnvironment/azuredeploy.json')]",
+    "artifactsLocation": "https://github.com/marvin-garcia/ASEInternalApp/raw/master/AzureResourceGroup",
+    "agentTemplateURL": "[concat(variables('artifactsLocation'), '/AgentVM/azuredeploy.json')]",
+    "aseTemplateURL": "[concat(variables('artifactsLocation'), '/AppServiceEnvironment/azuredeploy.json')]",
     "AppDns": "[concat(parameters('siteName'),'.',parameters('domainName'))]",
     "agentVmSubnetId": "[concat(parameters('vnetId'), '/subnets/', parameters('agentSubnetName'))]",
     "aseSubnetId": "[concat(parameters('vnetId'), '/subnets/', parameters('aseSubnetName'))]",
@@ -181,7 +216,7 @@
             "value": "[parameters('capacity')]"
           },
           "_artifactsLocation": {
-            "value": "[parameters('_artifactsLocation')]"
+            "value": "[variables('artifactsLocation')]"
           }
         }
       }
@@ -205,10 +240,10 @@
             "value": "[parameters('agentVmSize')]"
           },
           "adminUsername": {
-            "value": "[parameters('adminUsername')]"
+            "value": "[parameters('agentVmAdminUsername')]"
           },
           "adminPassword": {
-            "value": "[parameters('adminPassword')]"
+            "value": "[parameters('agentVmAdminPassword')]"
           },
           "vmName": {
             "value": "[parameters('agentVmName')]"
@@ -229,7 +264,7 @@
             "value": "[variables('AppDns')]"
           },
           "_artifactsLocation": {
-            "value": "[parameters('_artifactsLocation')]"
+            "value": "[variables('artifactsLocation')]"
           }
         }
       }
