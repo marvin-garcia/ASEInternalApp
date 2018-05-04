@@ -17,7 +17,7 @@ The purpose of this exercise is to implement a CI/CD pipeline in VSTS with a web
 
 The first step is to have a network environment on Azure. For this demo, I created 2 virtual networks; “Enterprise” and “Corporate” and connected them via Vnet Peering. I also set up a Domain Controller virtual machine (DC1) and a jump box virtual machine (JumpBox) inside the Enterprise virtual network to test the web app access at the end of the exercise.
 
-![azure-base-env](ASEInternalApp/images/azure-base-env.png)
+![azure-base-env](images/azure-base-env.png)
 
 The virtual network Corporate is intended to host the ASE environment and build agent VMs. For that purpose, I have created 2 subnets: BuildAgentSubnet and ILBASESubnet. NOTE: The subnet passed to the template to deploy the ASE must be empty, otherwise your environment may fail. Below you can see the subnets inside Corporate and their address ranges:
 
@@ -34,7 +34,8 @@ Now I will use the PowerShell Script [PrepareDevopsAseEnviroment.ps1](ASEInterna
 
 ```
 Cd <repository-location>\AzureResourceGroup\DevOpsAse\
-.\pre-requisites\PrepareDevopsAseEnvironment.ps1 `
+
+& .\pre-requisites\PrepareDevopsAseEnvironment.ps1 `
     -DomainName "contoso.com" `
     -CertificatePassword (ConvertTo-SecureString "******" -AsPlainText -Force) `
     -VnetResourceGroupName "EnterpriseRG" `
