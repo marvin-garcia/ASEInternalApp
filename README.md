@@ -34,7 +34,7 @@ I also made sure to configure the DNS servers in both virtual networks, to provi
 
 **NOTE: if you change the DNS server settings after the creation of any virtual machines, they must be restarted to have these changes applied.**
 
-You can use the PowerShell Script [PrepareDevopsAseEnviroment.ps1](AzureResourceGroup/DevOpsAse/pre-requisites/PrepareDevopsAseEnvironment.ps1) to generate some of the parameters for my deployment. Below is the execution of the PS script using PowerShell ISE:
+You can use the PowerShell Script [PrepareDevopsAseEnviroment.ps1](AzureResourceGroup/DevOpsAse/pre-requisites/PrepareDevopsAseEnvironment.ps1) to generate some of the parameters for my deployment. Below is the execution of the PS script using `PowerShell ISE`:
 
 ```
 cd <repository-location>\AzureResourceGroup\DevOpsAse\
@@ -56,9 +56,9 @@ After running the PS code above as an administrator, it generates the file `azur
 
 **NOTE: If you don’t want to create a web app at this moment, you can leave the parameter “siteName” empty and it will skip that step for another time.**
 
-**NOTE: The parameter `paToken` is related to a Personal Access token in your VSTS/TFS account. Please refer to [this article](https://docs.microsoft.com/en-us/vsts/accounts/use-personal-access-tokens-to-authenticate?view=vsts) to know how to generate personal access tokens in VSTS/TFS.**
+**NOTE: The parameter `PAToken` is related to a Personal Access token in your VSTS/TFS account. Please refer to [this article](https://docs.microsoft.com/en-us/vsts/accounts/use-personal-access-tokens-to-authenticate?view=vsts) to know how to generate personal access tokens in VSTS/TFS.**
 
-**NOTE: The parameter `agentPool` is related to the agent pool in your VSTS/TFS account. For more information about how to manage agent queues/pools in VSTS/TFS, please visit [this article](https://docs.microsoft.com/en-us/vsts/build-release/concepts/agents/pools-queues?view=vsts).**
+**NOTE: The parameter `agentPool` is related to the agent pool in your VSTS/TFS account. In this exercise I used the `Default` agent pool. For more information about how to manage agent queues/pools in VSTS/TFS, please visit [this article](https://docs.microsoft.com/en-us/vsts/build-release/concepts/agents/pools-queues?view=vsts).**
 
 **NOTE: The parameter `agentVmResourceGroup` is used to create the agent VM on a resource group different than the one used for the ASE environment. If you want to use the same resource group for both deployments; leave it empty.**
 
