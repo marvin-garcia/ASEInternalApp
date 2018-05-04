@@ -89,7 +89,7 @@
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Resource group to allocate the VSTS/TFS Agent VM"
+        "description": "Resource group to allocate the VSTS/TFS Agent VM. If left empty, the agent will be created in the same resource group as the ASE"
       }
     },
     "agentVmName": {
