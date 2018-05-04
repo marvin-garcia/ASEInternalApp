@@ -5,10 +5,10 @@ This repository walks you through implementing a CI/CD pipeline using VSTS or TF
 The content of this repository is divided in two different Visual Studio solutions: 
 
 ### AzureResourceGroup
-This solution contains the required ARM templates to deploy a DevOps ILB ASE web app on Azure. For more details, please see the appropriate [details file]().
+This solution contains the required ARM templates to deploy a DevOps ILB ASE web app on Azure. For more details, please see the appropriate [details file](AzureResourceGroup/README.md).
 
 ### WebApplication
-This solution contains a basic ASP.NET web application that is used to implement the CI/CD pipeline on VSTS against the ILB ASE web app service. For more details, please see the appropriate [details file]().
+This solution contains a basic ASP.NET web application that is used to implement the CI/CD pipeline on VSTS against the ILB ASE web app service.
 
 # Walkthrough
 The purpose of this exercise is to implement a CI/CD pipeline in VSTS with a web app that is behind an Internal Load Balancer (ILB) App Service Environment (ASE). Because with ASE, web apps can be deployed inside an Azure virtual network using an internal load balancer to provide a private IP, the easiest approach is to configure a build agent on a virtual machine that has networking access to the ILB private IP, and then register the build server with an agent pool in a VSTS/TFS account.
