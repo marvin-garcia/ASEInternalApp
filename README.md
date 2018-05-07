@@ -34,7 +34,7 @@ I also made sure to configure the DNS servers in both virtual networks, to provi
 
 **NOTE: if you change the DNS server settings after the creation of any virtual machines, they must be restarted to have these changes applied.**
 
-You can use the PowerShell Script [PrepareDevopsAseEnviroment.ps1](AzureResourceGroup/DevOpsAse/pre-requisites/PrepareDevopsAseEnvironment.ps1) to generate some of the parameters for my deployment. Below is the execution of the PS script using `PowerShell ISE`:
+You can use the PowerShell Script [PrepareDevopsAseEnvironment.ps1](AzureResourceGroup/DevOpsAse/pre-requisites/PrepareDevopsAseEnvironment.ps1) to generate some of the parameters for this deployment. Below is the execution of the PowerShell script using `PowerShell ISE`:
 
 ```
 cd <repository-location>\AzureResourceGroup\DevOpsAse\
@@ -50,7 +50,9 @@ cd <repository-location>\AzureResourceGroup\DevOpsAse\
     -OutFile ".\azuredeploy.parameters.json"
 ```
 
-The `VSTSAccountName` is the first part of the URL you use to log in to the VSTS/TFS portal. In my case the URL is `https://marvin-garcia.visualstudio.com/`, so my account name is `marvin-garcia`.
+The `DomainName` parameter refers to the domain inside your virtual network. In this example I chose to use contoso.com.
+
+The `VSTSAccountName` parameter is the first part of the URL you use to log in to the VSTS/TFS portal. In my case the URL is `https://marvin-garcia.visualstudio.com/`, so my account name is `marvin-garcia`.
 
 After running the PS code above as an administrator, it generates the file `azuredeploy.parameters.json` with most of the required parameters auto populated. You must finish filling up the remaining empty parameters.
 
@@ -108,7 +110,12 @@ You will find the App service URL in the `overview` section of your App Service 
 
 ![app-service-url](images/app-service-url.png)
 
-Your DNS server must include both `<site-name>.<your-domain>` and `<site-name>.scm.<your-domain>`, The reason for the second entry is that SSL connections to the SCM/Kudu site associated with your app will be made using that address. For more details please refer to [this article](https://docs.microsoft.com/en-us/azure/app-service/environment/app-service-environment-with-internal-load-balancer). After creating the A host records, my DNS zone looks like this:
+Unlike standard App Services and public-facing ASE environments (where Azure provides a publicly accessible URL like `<site-name>.azurewebsites.net`), ILB ASE environments only provide an IP address inside a virtual network and the ability to host apps that are not listed in public DNS servers. This means that you must manage your own DNS inside your network and provide your own certificate for HTTPS connections (this deployment configures a self-signed certificate to get you started, but for production environments it is recommended that you use a certificate signed by a trusted authority).
+
+DNS management can be done in many different ways, and the one that works best for you will depend on how your network is configured and who manages it. The easiest and fastest way to get started managing domains for private networks is using [Azure DNS](https://docs.microsoft.com/en-us/azure/dns/private-dns-overview), but if you already have a Domain Controller server located in your virtual network or accessible from on-premises through a VPN tunnel, you can administer your DNS zones and [add a DNS resource record](https://docs.microsoft.com/en-us/windows-server/networking/technologies/ipam/add-a-dns-resource-record) that points to your internal-facing apps. You can also administer your DNS zones when using [Azure AD Domain Services](https://docs.microsoft.com/en-us/azure/active-directory-domain-services/active-directory-ds-admin-guide-administer-dns). For this tutorial I decided to use a Domain Controller VM that I previously had, and managed my DNS records directly there.
+
+
+Wherever you decide to manage your DNS settings, your records must include both `<site-name>.<your-domain>` and `<site-name>.scm.<your-domain>`, The reason for the second entry is that SSL connections to the SCM/Kudu site associated with your app will be made using that address. For more details please refer to [this article](https://docs.microsoft.com/en-us/azure/app-service/environment/app-service-environment-with-internal-load-balancer). In this tutorial my site name is `samplewebapp1` and my domain is `contoso.com`, therefore the required records will be `samplewebapp1.contoso.com` and `samplewebapp1.scm.contoso.com`. After creating the A host records, my DNS zone looks like this:
 
 A host record for `samplewebapp1.contoso.com`
 
