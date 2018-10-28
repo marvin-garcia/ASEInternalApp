@@ -71,7 +71,7 @@
     "TSServerUrl": {
       "type": "string",
       "metadata": {
-        "description": "VSTS/TFS server URL"
+        "description": "VSTS/TFS server URL. Example: https://dev.azure.com/contoso, or https://my-tfs.contoso.com/contoso"
       }
     },
     "AgentPool": {
