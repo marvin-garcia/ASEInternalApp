@@ -98,6 +98,10 @@
         "description": "DNS of the web app contained in the ASE"
       }
     },
+    "VstsAgentUrl": {
+      "type": "string",
+      "defaultValue": "https://vstsagentpackage.azureedge.net/agent/2.141.1/vsts-agent-win-x64-2.141.1.zip"
+    },
     "_artifactsLocation": {
       "type": "string",
       "metadata": {
@@ -108,8 +112,7 @@
   "variables": {
     "windowsVmTemplateURL": "[concat(parameters('_artifactsLocation'), '/AgentVM/nested-templates/windowsvm.json')]",
     "AgentConfigureModuleURL": "[concat(parameters('_artifactsLocation'), '/AgentVM/DSC/ConfigureASEBuildAgent.ps1.zip')]",
-    "AgentConfigureFunction": "ConfigureASEBuildAgent.ps1\\ConfigureASEBuildAgentDsc",
-    "agentDownloadUrl": "https://vstsagentpackage.azureedge.net/agent/2.127.0/vsts-agent-win-x64-2.127.0.zip"
+    "AgentConfigureFunction": "ConfigureASEBuildAgent.ps1\\ConfigureASEBuildAgentDsc"
 
   },
   "resources": [
@@ -175,7 +178,7 @@
           "configurationFunction": "[variables('AgentConfigureFunction')]",
           "properties": {
             "TSUrl": "[parameters('TSServerUrl')]",
-            "VSTSAgentUrl": "[variables('agentDownloadUrl')]",
+            "VSTSAgentUrl": "[parameters('VstsAgentUrl')]",
             "AgentPool": "[parameters('AgentPool')]",
             "PAToken": "[parameters('PAToken')]",
             "AseIp": "[parameters('AseIp')]",
