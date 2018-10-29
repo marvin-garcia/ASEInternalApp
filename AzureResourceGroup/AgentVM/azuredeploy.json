@@ -104,6 +104,7 @@
     },
     "_artifactsLocation": {
       "type": "string",
+      "defaultValue": "https://raw.githubusercontent.com/marvin-garcia/ASEInternalApp/master/AzureResourceGroup",
       "metadata": {
         "description": "Artifacts location Url"
       }
